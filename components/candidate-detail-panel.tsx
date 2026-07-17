@@ -24,6 +24,12 @@ export default function CandidateDetailPanel({
   const [detail, setDetail] = useState<Detail | null>(null);
   const [noteBody, setNoteBody] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setVisible(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -53,11 +59,19 @@ export default function CandidateDetailPanel({
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
       <div
-        className="absolute inset-0 bg-slate-900/30"
+        className={clsx(
+          "absolute inset-0 bg-slate-900/30 transition-opacity duration-300",
+          visible ? "opacity-100" : "opacity-0"
+        )}
         onClick={onClose}
         aria-hidden
       />
-      <div className="relative flex h-full w-[440px] flex-col bg-white shadow-2xl">
+      <div
+        className={clsx(
+          "relative flex h-full w-[440px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out",
+          visible ? "translate-x-0" : "translate-x-full"
+        )}
+      >
         <div className="flex items-start justify-between border-b border-slate-200 px-6 py-5">
           {detail ? (
             <div>
@@ -70,8 +84,7 @@ export default function CandidateDetailPanel({
               <span
                 className={clsx(
                   "mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold",
-                  stageStyle(detail.candidate.stage).header,
-                  "bg-slate-100"
+                  stageStyle(detail.candidate.stage).badge
                 )}
               >
                 {detail.candidate.stage}
@@ -137,8 +150,8 @@ export default function CandidateDetailPanel({
               </h3>
               <div className="mt-3">
                 {detail.candidate.resumeFilename ? (
-                  <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700">
-                    <FileText size={16} className="text-slate-400" />
+                  <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50">
+                    <FileText size={16} className="shrink-0 text-slate-400" />
                     <span className="truncate">
                       {detail.candidate.resumeFilename}
                     </span>
@@ -218,7 +231,7 @@ export default function CandidateDetailPanel({
                   type="button"
                   onClick={submitNote}
                   disabled={isPending || !noteBody.trim()}
-                  className="mt-2 rounded-lg bg-blue-600 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="mt-2 rounded-lg bg-blue-600 px-3.5 py-1.5 text-sm font-medium text-white shadow-sm shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-blue-600/30 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
                 >
                   メモを追加
                 </button>

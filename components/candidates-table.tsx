@@ -82,7 +82,7 @@ export default function CandidatesTable({
               <tr
                 key={c.id}
                 onClick={() => setSelectedId(c.id)}
-                className="cursor-pointer hover:bg-slate-50"
+                className="cursor-pointer transition-colors hover:bg-slate-50"
               >
                 <td className="px-5 py-3.5 font-medium text-slate-900">
                   {c.name}

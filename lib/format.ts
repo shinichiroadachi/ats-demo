@@ -26,19 +26,78 @@ export function sourceStyle(source: string): string {
   return SOURCE_STYLES[source] ?? "bg-slate-50 text-slate-700 ring-slate-600/20";
 }
 
-export const STAGE_STYLES: Record<string, { dot: string; header: string }> = {
-  応募: { dot: "bg-slate-400", header: "text-slate-700" },
-  書類選考: { dot: "bg-sky-500", header: "text-sky-700" },
-  一次面接: { dot: "bg-indigo-500", header: "text-indigo-700" },
-  最終面接: { dot: "bg-violet-500", header: "text-violet-700" },
-  内定: { dot: "bg-emerald-500", header: "text-emerald-700" },
-  入社: { dot: "bg-teal-600", header: "text-teal-700" },
-  不採用: { dot: "bg-rose-400", header: "text-rose-700" },
-  辞退: { dot: "bg-gray-400", header: "text-gray-600" },
+export const STAGE_STYLES: Record<
+  string,
+  { dot: string; header: string; badge: string; column: string; accent: string }
+> = {
+  応募: {
+    dot: "bg-slate-400",
+    header: "text-slate-700",
+    badge: "bg-slate-100 text-slate-700",
+    column: "bg-slate-100/70",
+    accent: "#94a3b8",
+  },
+  書類選考: {
+    dot: "bg-sky-500",
+    header: "text-sky-700",
+    badge: "bg-sky-50 text-sky-700",
+    column: "bg-sky-50/70",
+    accent: "#0ea5e9",
+  },
+  一次面接: {
+    dot: "bg-indigo-500",
+    header: "text-indigo-700",
+    badge: "bg-indigo-50 text-indigo-700",
+    column: "bg-indigo-50/70",
+    accent: "#6366f1",
+  },
+  最終面接: {
+    dot: "bg-violet-500",
+    header: "text-violet-700",
+    badge: "bg-violet-50 text-violet-700",
+    column: "bg-violet-50/70",
+    accent: "#8b5cf6",
+  },
+  内定: {
+    dot: "bg-emerald-500",
+    header: "text-emerald-700",
+    badge: "bg-emerald-50 text-emerald-700",
+    column: "bg-emerald-50/70",
+    accent: "#10b981",
+  },
+  入社: {
+    dot: "bg-teal-600",
+    header: "text-teal-700",
+    badge: "bg-teal-50 text-teal-700",
+    column: "bg-teal-50/70",
+    accent: "#0d9488",
+  },
+  不採用: {
+    dot: "bg-rose-400",
+    header: "text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+    column: "bg-rose-50/70",
+    accent: "#fb7185",
+  },
+  辞退: {
+    dot: "bg-gray-400",
+    header: "text-gray-600",
+    badge: "bg-gray-100 text-gray-600",
+    column: "bg-gray-100/70",
+    accent: "#9ca3af",
+  },
+};
+
+const DEFAULT_STAGE_STYLE = {
+  dot: "bg-slate-400",
+  header: "text-slate-700",
+  badge: "bg-slate-100 text-slate-700",
+  column: "bg-slate-100/70",
+  accent: "#94a3b8",
 };
 
 export function stageStyle(stage: string) {
-  return STAGE_STYLES[stage] ?? { dot: "bg-slate-400", header: "text-slate-700" };
+  return STAGE_STYLES[stage] ?? DEFAULT_STAGE_STYLE;
 }
 
 export function jobStatusStyle(status: string): string {

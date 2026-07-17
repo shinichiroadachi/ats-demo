@@ -18,7 +18,7 @@ export default async function JobsPage() {
         </div>
         <Link
           href="/jobs/new"
-          className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-blue-600/30"
         >
           <Plus size={16} />
           求人を追加
@@ -40,7 +40,7 @@ export default async function JobsPage() {
             {jobs.map((job) => (
               <tr
                 key={job.id}
-                className="cursor-pointer hover:bg-slate-50"
+                className="cursor-pointer transition-colors hover:bg-slate-50"
               >
                 <td className="px-5 py-3.5">
                   <Link

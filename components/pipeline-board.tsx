@@ -66,7 +66,7 @@ function DroppableColumn({
       ref={setNodeRef}
       className={clsx(
         "flex h-full flex-col gap-2 rounded-xl p-2 transition-colors",
-        isOver && "bg-blue-50/60 ring-2 ring-blue-200"
+        isOver && "bg-blue-100/70 ring-2 ring-blue-300"
       )}
     >
       {children}
@@ -153,7 +153,7 @@ export default function PipelineBoard({ candidates, jobs }: PipelineBoardProps) 
         <select
           value={jobFilter}
           onChange={(e) => setJobFilter(e.target.value)}
-          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           <option value="all">すべての職種</option>
           {jobs.map((job) => (
@@ -170,56 +170,62 @@ export default function PipelineBoard({ candidates, jobs }: PipelineBoardProps) 
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex flex-1 gap-4 overflow-x-auto p-6">
-          {PIPELINE_STAGES.map((stage) => {
-            const stageCandidates = columns.get(stage) ?? [];
-            const style = stageStyle(stage);
-            return (
-              <div
-                key={stage}
-                className="flex w-72 shrink-0 flex-col rounded-xl bg-slate-100/70"
-              >
-                <div className="flex items-center justify-between px-3 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className={clsx("h-2 w-2 rounded-full", style.dot)} />
-                    <h2 className={clsx("text-sm font-bold", style.header)}>
-                      {stage}
-                    </h2>
+        <div className="relative flex-1 overflow-hidden">
+          <div className="flex h-full gap-3 overflow-x-auto px-6 py-6 [scrollbar-gutter:stable]">
+            {PIPELINE_STAGES.map((stage) => {
+              const stageCandidates = columns.get(stage) ?? [];
+              const style = stageStyle(stage);
+              return (
+                <div
+                  key={stage}
+                  className={clsx(
+                    "flex w-[272px] shrink-0 flex-col rounded-xl border border-black/[0.03]",
+                    style.column
+                  )}
+                >
+                  <div className="flex items-center justify-between px-3 py-3">
+                    <div className="flex items-center gap-2">
+                      <span className={clsx("h-2 w-2 rounded-full", style.dot)} />
+                      <h2 className={clsx("text-sm font-bold", style.header)}>
+                        {stage}
+                      </h2>
+                    </div>
+                    <span className="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-sm">
+                      {stageCandidates.length}
+                    </span>
                   </div>
-                  <span className="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate-500 shadow-sm">
-                    {stageCandidates.length}
-                  </span>
+                  <div className="flex-1 overflow-y-auto px-2 pb-2">
+                    <DroppableColumn stage={stage}>
+                      {stageCandidates.map((candidate) => (
+                        <DraggableCard
+                          key={candidate.id}
+                          candidate={candidate}
+                          jobTitle={
+                            candidate.jobId
+                              ? jobById.get(candidate.jobId)?.title
+                              : undefined
+                          }
+                          onClick={() => setSelectedId(candidate.id)}
+                          onArchive={(stage) => archive(candidate.id, stage)}
+                        />
+                      ))}
+                      {stageCandidates.length === 0 && (
+                        <div className="rounded-lg border border-dashed border-slate-300/80 py-6 text-center text-xs text-slate-400">
+                          候補者なし
+                        </div>
+                      )}
+                    </DroppableColumn>
+                  </div>
                 </div>
-                <div className="flex-1 overflow-y-auto px-2 pb-2">
-                  <DroppableColumn stage={stage}>
-                    {stageCandidates.map((candidate) => (
-                      <DraggableCard
-                        key={candidate.id}
-                        candidate={candidate}
-                        jobTitle={
-                          candidate.jobId
-                            ? jobById.get(candidate.jobId)?.title
-                            : undefined
-                        }
-                        onClick={() => setSelectedId(candidate.id)}
-                        onArchive={(stage) => archive(candidate.id, stage)}
-                      />
-                    ))}
-                    {stageCandidates.length === 0 && (
-                      <div className="rounded-lg border border-dashed border-slate-300 py-6 text-center text-xs text-slate-400">
-                        候補者なし
-                      </div>
-                    )}
-                  </DroppableColumn>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-slate-50 to-transparent" />
         </div>
 
         <DragOverlay>
           {activeCandidate ? (
-            <div className="w-72 rotate-2">
+            <div className="w-[272px] rotate-2 drop-shadow-xl">
               <CandidateCard
                 candidate={activeCandidate}
                 jobTitle={

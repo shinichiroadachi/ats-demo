@@ -53,7 +53,7 @@ export default function CandidateCard({
       {...(dragHandleProps?.listeners ?? {})}
       onClick={onClick}
       className={clsx(
-        "group relative cursor-grab rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing",
+        "group relative cursor-grab rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md active:cursor-grabbing",
         isDragging && "opacity-40"
       )}
     >
